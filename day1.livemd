@@ -1,0 +1,41 @@
+# Day 1
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+```
+
+## Section
+
+```elixir
+input = Kino.Input.textarea("Your Input")
+```
+
+## Part 1
+
+```elixir
+lines = Kino.Input.read(input) |> String.split("\n")
+
+calories =
+  lines
+  |> Enum.chunk_by(&(&1 == ""))
+  |> Enum.reject(&(&1 == [""]))
+  |> Enum.map(fn x ->
+    x
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.sum()
+  end)
+
+calories |> Enum.max()
+```
+
+## Part 2
+
+```elixir
+calories
+|> Enum.sort()
+|> Enum.reverse()
+|> Enum.take(3)
+|> Enum.sum()
+```
