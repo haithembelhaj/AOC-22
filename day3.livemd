@@ -1,0 +1,56 @@
+# Day 3
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+```
+
+## Section
+
+```elixir
+input = Kino.Input.textarea("Your Input")
+```
+
+```elixir
+lines = Kino.Input.read(input) |> String.split("\n")
+```
+
+```elixir
+prio = fn n ->
+  if n > 96 do
+    n - 96
+  else
+    n - 64 + 26
+  end
+end
+```
+
+```elixir
+lines
+|> Enum.map(&String.to_charlist/1)
+|> Enum.map(fn l ->
+  len = round(length(l) / 2)
+  {a, b} = Enum.split(l, len)
+  MapSet.intersection(MapSet.new(a), MapSet.new(b)) |> MapSet.to_list() |> List.first() |> prio.()
+end)
+|> Enum.sum()
+```
+
+## Part 2
+
+```elixir
+lines
+|> Enum.map(&String.to_charlist/1)
+|> Enum.chunk_every(3)
+|> Enum.map(fn g ->
+  [a, b, c] = g |> Enum.map(&MapSet.new/1)
+
+  MapSet.intersection(a, b)
+  |> MapSet.intersection(c)
+  |> MapSet.to_list()
+  |> List.first()
+  |> prio.()
+end)
+|> Enum.sum()
+```
