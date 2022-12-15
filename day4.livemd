@@ -1,0 +1,43 @@
+# Day 4
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.7.0"}
+])
+```
+
+## Section
+
+```elixir
+input = Kino.Input.textarea("Your Input")
+```
+
+```elixir
+lines = Kino.Input.read(input) |> String.split("\n")
+```
+
+## Part 1
+
+```elixir
+numbers =
+  lines
+  |> Enum.map(fn i ->
+    i
+    |> String.split(",")
+    |> Enum.map(fn p -> p |> String.split("-") |> Enum.map(&String.to_integer/1) end)
+  end)
+
+numbers
+|> Enum.map(fn [[a, b], [c, d]] -> (a <= c and d <= b) or (c <= a and b <= d) end)
+|> Enum.filter(& &1)
+|> length
+```
+
+## Part 2
+
+```elixir
+numbers
+|> Enum.map(fn [[a, b], [c, d]] -> (a <= c and b >= c) or (c <= a and d >= a) end)
+|> Enum.filter(& &1)
+|> length
+```
